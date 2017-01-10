@@ -1,4 +1,9 @@
 #!/usr/bin/python
+
+# sudo influxd
+# sudo service grafana start
+# ./bierboerse.py
+
 import time
 import datetime
 import BaseHTTPServer
