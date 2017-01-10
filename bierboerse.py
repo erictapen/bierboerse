@@ -2,10 +2,14 @@
 import time
 import datetime
 import BaseHTTPServer
+from influxdb import InfluxDBClient
 
 
 HOST_NAME = 'localhost' 
 PORT_NUMBER = 8000
+
+global alpi
+global pils
 
 
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -29,13 +33,28 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         s.wfile.write("</body></html>")
     def do_POST(s):
         print "Ein Bier wurde gekauft."
-        print s.path
-        print s.headers
+        # print s.path
+        # print s.headers
         with open("alpi.csv", "a") as myfile:
             myfile.write(str(datetime.datetime.now()) + "\n")
+        global alpi
+        global pils
+        client.write_points(
+            [{
+                "measurement": "alpi",
+                "fields": {
+                    "value": alpi
+                }
+            }]
+        )
+        alpi += 1
         s.send_response(204)
 
 if __name__ == '__main__':
+    client = InfluxDBClient('localhost', 8086, 'root', 'root', 'example')
+    client.create_database('example')
+    alpi = 0
+    pils = 0
     server_class = BaseHTTPServer.HTTPServer
     httpd = server_class((HOST_NAME, PORT_NUMBER), MyHandler)
     print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER)
