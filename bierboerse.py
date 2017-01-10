@@ -10,7 +10,7 @@ import BaseHTTPServer
 from influxdb import InfluxDBClient
 
 
-HOST_NAME = 'localhost' 
+HOST_NAME = '0.0.0.0' 
 PORT_NUMBER = 8000
 
 global alpi
@@ -37,22 +37,35 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         s.wfile.write("    </form>")
         s.wfile.write("</body></html>")
     def do_POST(s):
-        print "Ein Bier wurde gekauft."
         # print s.path
         # print s.headers
         with open("alpi.csv", "a") as myfile:
             myfile.write(str(datetime.datetime.now()) + "\n")
         global alpi
         global pils
-        client.write_points(
-            [{
-                "measurement": "alpi",
-                "fields": {
-                    "value": alpi
-                }
-            }]
-        )
-        alpi += 1
+        print str(s.path) + "PATHAT"
+        if str(s.path) == "/alpi":
+            client.write_points(
+                [{
+                    "measurement": "alpi",
+                    "fields": {
+                        "value": alpi
+                    }
+                }]
+            )
+            alpi += 1
+            print "Ein Alpi wurde gekauft."
+        if str(s.path) == "/pils":
+            client.write_points(
+                [{
+                    "measurement": "pils",
+                    "fields": {
+                        "value": pils
+                    }
+                }]
+            )
+            pils += 1
+            print "Ein Pils wurde gekauft."
         s.send_response(204)
 
 if __name__ == '__main__':
