@@ -5,7 +5,6 @@
 # ./bierboerse.py
 
 import time
-import datetime
 import BaseHTTPServer
 from influxdb import InfluxDBClient
 
@@ -37,10 +36,6 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         s.wfile.write("    </form>")
         s.wfile.write("</body></html>")
     def do_POST(s):
-        # print s.path
-        # print s.headers
-        with open("alpi.csv", "a") as myfile:
-            myfile.write(str(datetime.datetime.now()) + "\n")
         global alpi
         global pils
         print str(s.path) + "PATHAT"
