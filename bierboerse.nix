@@ -38,7 +38,7 @@ in
       after = [ "network.target" "influxdb.service" ];
       wantedBy = [ "multi-user.target" ];
       script = ''
-        ${pkgs.influxdb} -execute "create database bierboerse"
+        ${pkgs.influxdb}/bin/influx -execute "create database bierboerse"
         ${foo}/bin/bierboerse.py
       '';
     };
