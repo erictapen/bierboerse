@@ -1,4 +1,5 @@
-with import <nixpkgs> {};
+{pkgs, stdenv, buildEnv, ...}:
+#with import <nixpkgs> {};
 let myPythonEnv = stdenv.mkDerivation rec {
   name = "myPythonEnv";
   env = buildEnv { name = name; paths = buildInputs; };

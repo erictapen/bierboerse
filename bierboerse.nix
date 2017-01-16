@@ -4,14 +4,15 @@ with lib;
 
 let 
 
-  cfg = config.bierboerse;
+  cfg = config.services.bierboerse;
+  foo = pkgs.callPackage ./default.nix {};
 
 in
 
 {
 
   options = {
-    bierboerse = {
+    services.bierboerse = {
       enable = mkOption {
         default = false;
         description = ''
@@ -36,9 +37,10 @@ in
     systemd.services.bierboerse = {
       after = [ "network.target" "influxdb.service" ];
       wantedBy = [ "multi-user.target" ];
+      script = ''
+        ${pkgs.influxdb} -execute "create database bierboerse"
+        ${foo}/bin/bierboerse.py
+      '';
     };
-    preStart = ''
-      ${pkgs.influx} -execute "create database bierboerse"
-    '';
   };
 }
