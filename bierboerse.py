@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # sudo influxd
-# sudo service grafana start
+# sudo service grafana-server start
 # ./bierboerse.py
 
 import time

@@ -39,6 +39,6 @@ in
     };
     preStart = ''
       ${pkgs.influx} -execute "create database bierboerse"
-    ''
+    '';
   };
 }
