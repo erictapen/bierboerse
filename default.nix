@@ -9,7 +9,10 @@ let myPythonEnv = stdenv.mkDerivation rec {
 
   buildInputs = [
     pkgs.python27Packages.influxdb
-    pkgs.python27Packages.requests
+    pkgs.python27Packages.requests2
+    pkgs.python27Packages.pytz
+    pkgs.python27Packages.dateutil
+    pkgs.python27Packages.six
     pkgs.python27
   ];
 };
