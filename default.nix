@@ -1,5 +1,4 @@
 {pkgs, stdenv, buildEnv, ...}:
-#with import <nixpkgs> {};
 let myPythonEnv = stdenv.mkDerivation rec {
   name = "myPythonEnv";
   env = buildEnv { name = name; paths = buildInputs; };
@@ -20,14 +19,10 @@ let myPythonEnv = stdenv.mkDerivation rec {
 in
 
 stdenv.mkDerivation {
-  name = "bierboerse-0.0.1-SNAPSHOT";
+  name = "bierboerse-${version}";
+  version = "0.0.1-SNAPSHOT";
 
   src = ./.;
-  # pkgs.fetchgit {
-  #  url =  "https://github.com/erictapen/bierboerse.git";
-  #  rev = "a8c8cd35ecf9e6cfeac4706ca9017727297f06bd";
-  #  sha256 = "14m0gy75hqyrmid68d15r7cskxnf7w4526n8l5vrpmizgralvr8k";
-  #};
   
   buildInputs = [
     myPythonEnv
