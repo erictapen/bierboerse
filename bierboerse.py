@@ -65,7 +65,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 if __name__ == '__main__':
     client = InfluxDBClient(host='127.0.0.1', database='bierboerse')
-    client.create_database('bierboerse')
+    # client.create_database('bierboerse') # database should be created by systemdservice
     alpi = 0
     pils = 0
     server_class = BaseHTTPServer.HTTPServer
