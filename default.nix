@@ -18,7 +18,7 @@ let myPythonEnv = stdenv.mkDerivation rec {
 
 in
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   name = "bierboerse-${version}";
   version = "0.0.1-SNAPSHOT";
 
@@ -42,5 +42,4 @@ stdenv.mkDerivation {
 #    ln -s ${myPythonEnv}/lib $out
     exit 0
   '';
- 
 }

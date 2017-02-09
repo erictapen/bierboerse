@@ -37,9 +37,13 @@ in
     systemd.services.bierboerse = {
       after = [ "network.target" "influxdb.service" ];
       wantedBy = [ "multi-user.target" ];
+      description = "bierboerse, bringing capitalism to the bar";
       script = ''
         ${pkgs.influxdb}/bin/influx -execute "create database bierboerse"
         ${foo}/bin/bierboerse.py
+      '';
+      postStop = ''
+        ${pkgs.influxdb}/bin/influx -execute "drop database bierboerse"
       '';
     };
   };

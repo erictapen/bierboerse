@@ -1,0 +1,12 @@
+{
+	"beer": {
+		"Alpirsbacher": {
+			"initialCost": 2.00,
+			"amount": 500
+		},
+		"Pilsener Urquell": {
+			"initialCost": 2.50,
+			"amount": 450
+		}
+	}
+}
