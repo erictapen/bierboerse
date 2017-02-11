@@ -7,6 +7,10 @@
 		"Pilsener Urquell": {
 			"initialCost": 2.50,
 			"amount": 450
+		},
+		"Stuttgarter Hofbrau": {
+			"initialCost": 2.50,
+			"amount": 450
 		}
 	}
 }

@@ -8,9 +8,7 @@
 import time
 import BaseHTTPServer
 from influxdb import InfluxDBClient
-import sys
 import json
-import base64
 import re
 
 
@@ -18,8 +16,6 @@ HOST_NAME = '0.0.0.0'
 PORT_NUMBER = 8000
 
 global config
-global alpi
-global pils
 
 
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -33,15 +29,14 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         s.send_header("Content-type", "text/html")
         s.end_headers()
         s.wfile.write(
-	"<html><head><title>Title goes here.</title></head>\n"
-	"<body>\n"
-        "    <form action=\"alpi\" method=\"post\">\n"
-	"        <button name=\"foo\" value=\"upvote\">Alpi</button>\n"
-	"    </form>\n")
-	for beerstring in config["beer"]:
+	"<html><head><title>Title goes here.</title>"
+        "    <meta charset=\"utf-8\"/>"
+        "</head>\n"
+	"<body>\n")
+	for beername in config["beer"]:
 	    s.wfile.write(
-	    "    <form action=\"" + clean(beerstring) + "\" method=\"post\">\n"
-	    "        <button name=\"foo\" value=\"upvote\">Alpi</button>\n"
+	    "    <form action=\"" + clean(beername) + "\" method=\"post\">\n"
+	    "        <button name=\"foo\" value=\"upvote\">" + beername + "</button>\n"
 	    "    </form>\n")
 	s.wfile.write("</body></html>\n")
     def do_POST(s):
@@ -59,29 +54,6 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                     }]
                 )
                 print "Ein " + beer + " wurde gekauft."
-                
-        if str(s.path) == "/alpi":
-            client.write_points(
-                [{
-                    "measurement": "alpi",
-                    "fields": {
-                        "value": alpi
-                    }
-                }]
-            )
-            alpi += 1
-            print "Ein Alpi wurde gekauft."
-        if str(s.path) == "/pils":
-            client.write_points(
-                [{
-                    "measurement": "pils",
-                    "fields": {
-                        "value": pils
-                    }
-                }]
-            )
-            pils += 1
-            print "Ein Pils wurde gekauft."
         s.send_response(204)
 
 def clean(str):
@@ -92,12 +64,8 @@ if __name__ == '__main__':
     with open('/home/justin/git/bierboerse/data.json') as data_file:    
     	config = json.load(data_file)
     print config
-#    for beer in config["beer"]:
-#        config["beer"]["id"] = base64.urlsafe_b64encode(beer)
     client = InfluxDBClient(host='127.0.0.1', database='bierboerse')
     # client.create_database('bierboerse') # database should be created by systemdservice
-    alpi = 0
-    pils = 0
     server_class = BaseHTTPServer.HTTPServer
     httpd = server_class((HOST_NAME, PORT_NUMBER), MyHandler)
     print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER)
