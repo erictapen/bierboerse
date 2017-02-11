@@ -38,6 +38,7 @@ stdenv.mkDerivation rec {
     echo '#!${myPythonEnv}/bin/python2.7' > temp
     cat temp bierboerse.py > $out/bin/bierboerse.py
 #    cp bierboerse.py $out/bin
+    cp data.json $out/bin
     chmod +x $out/bin/bierboerse.py
 #    ln -s ${myPythonEnv}/lib $out
     exit 0

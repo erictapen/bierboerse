@@ -11,6 +11,7 @@ from influxdb import InfluxDBClient
 import sys
 import json
 import base64
+import re
 
 
 HOST_NAME = '0.0.0.0' 
@@ -51,9 +52,9 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 config["beer"][beer]["amount"] -= 1
                 client.write_points(
                     [{
-                        "measurement": "bla", #clean(beer),
+                        "measurement": clean(beer),
                         "fields": {
-                            "value": 3.0 #int(config["beer"][beer]["amount"])
+                            "value": int(config["beer"][beer]["amount"])
                         }
                     }]
                 )
@@ -84,10 +85,11 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         s.send_response(204)
 
 def clean(str):
-    return base64.urlsafe_b64encode(str)
+    str = str.strip().replace(' ', '_')
+    return re.sub(r'(?u)[^-\w.]', '', str)
 
 if __name__ == '__main__':
-    with open('data.json') as data_file:    
+    with open('/home/justin/git/bierboerse/data.json') as data_file:    
     	config = json.load(data_file)
     print config
 #    for beer in config["beer"]:
